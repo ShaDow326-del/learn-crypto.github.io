@@ -3,187 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn Crypto With ShaDow for beginners</title>
-    <!-- Load Tailwind CSS -->
+    <title>Crypto Guide - Learn Crypto With ShaDow</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap">
     <style>
-        /* Custom styles and configuration */
-        :root {
-            font-family: 'Inter', sans-serif;
+        :root { font-family: 'Inter', sans-serif; }
+        .container-padding { padding-left: 1rem; padding-right: 1rem; }
+        @media (min-width: 640px) { .container-padding { padding-left: 2rem; padding-right: 2rem; } }
+
+        body { background: #0f172a; overflow-x: hidden; }
+
+        .bg-animated {
+            position: fixed; inset: 0; z-index: 0;
+            background: linear-gradient(125deg, #0f172a 0%, #1e1b4b 40%, #0f172a 70%, #0c1a2e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
         }
-        .container-padding {
-            padding-left: 1rem;
-            padding-right: 1rem;
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        @media (min-width: 640px) {
-            .container-padding {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
+
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.12; animation: floatOrb 18s ease-in-out infinite; pointer-events: none; z-index: 0; }
+        .orb-1 { width: 500px; height: 500px; background: #4f46e5; top: -120px; left: -150px; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: #7c3aed; bottom: 5%; right: -100px; animation-delay: -6s; }
+        .orb-3 { width: 300px; height: 300px; background: #2563eb; top: 50%; left: 40%; animation-delay: -12s; }
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            33%       { transform: translate(30px,-40px) scale(1.05); }
+            66%       { transform: translate(-20px,30px) scale(0.95); }
         }
+
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+            background: linear-gradient(90deg, #4f46e5, #a5b4fc, #7c3aed);
+            z-index: 1000; transition: width 0.1s linear;
+            box-shadow: 0 0 8px #4f46e5, 0 0 16px #7c3aed44;
+        }
+
+        .header-glass {
+            background: rgba(30,41,59,0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(79,70,229,0.25);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #4f46e5 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .gradient-text-animated {
+            background: linear-gradient(270deg, #4f46e5, #a5b4fc, #7c3aed, #4f46e5);
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: textGradient 5s ease infinite;
+        }
+        @keyframes textGradient {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .fade-in { opacity: 0; animation: fadeIn 0.8s ease forwards; }
+        .fade-in-delay-1 { animation-delay: 0.2s; }
+        .fade-in-delay-2 { animation-delay: 0.4s; }
+        .fade-in-delay-3 { animation-delay: 0.6s; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-left  { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal-right { opacity: 0; transform: translateX(40px);  transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+        .stagger-1 { transition-delay: 0.05s; }
+        .stagger-2 { transition-delay: 0.15s; }
+        .stagger-3 { transition-delay: 0.25s; }
+        .stagger-4 { transition-delay: 0.35s; }
+        .stagger-5 { transition-delay: 0.45s; }
+        .stagger-6 { transition-delay: 0.55s; }
+
+        .glass-card {
+            background: rgba(30,41,59,0.6);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(79,70,229,0.2);
+            border-radius: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative; overflow: hidden;
+        }
+        .glass-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(79,70,229,0.08) 0%, transparent 60%);
+            pointer-events: none; border-radius: inherit;
+            transition: opacity 0.3s ease; opacity: 0;
+        }
+        .glass-card:hover::before { opacity: 1; }
+        .glass-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 60px rgba(79,70,229,0.25), 0 0 0 1px rgba(165,180,252,0.2);
+            border-color: rgba(165,180,252,0.35);
+        }
+
+        .gradient-border { position: relative; border-radius: 1rem; }
+        .gradient-border::after {
+            content: ''; position: absolute; inset: -1px; border-radius: inherit;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed, #2563eb);
+            z-index: -1; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .gradient-border:hover::after { opacity: 1; }
+
+        .card-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.3s ease; opacity: 0; }
+        .card-details.open { max-height: 200px; opacity: 1; padding-top: 0.75rem; }
+        .expand-btn {
+            cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.78rem; font-weight: 600; color: #a5b4fc; margin-top: 0.75rem;
+            border: none; background: transparent; padding: 0; transition: color 0.2s ease;
+        }
+        .expand-btn:hover { color: #e0e7ff; }
+        .expand-btn .arrow { display: inline-block; transition: transform 0.3s ease; }
+        .expand-btn.active .arrow { transform: rotate(180deg); }
+
+        .icon-float { display: inline-block; animation: iconFloat 3s ease-in-out infinite; }
+        @keyframes iconFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+        .neon-text {
+            color: #a5b4fc;
+            text-shadow: 0 0 8px rgba(165,180,252,0.6), 0 0 20px rgba(79,70,229,0.3);
+            transition: text-shadow 0.3s ease;
+        }
+        .neon-text:hover { text-shadow: 0 0 12px rgba(165,180,252,0.9), 0 0 30px rgba(79,70,229,0.5); }
+
+        .wave-divider { animation: waveSway 8s ease-in-out infinite; }
+        @keyframes waveSway { 0%,100% { transform: scaleX(1); } 50% { transform: scaleX(1.03); } }
+
+        #back-to-top {
+            position: fixed; bottom: 2rem; right: 1.5rem; z-index: 500;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #fff; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(79,70,229,0.4);
+        }
+        #back-to-top.visible { opacity: 1; transform: translateY(0); }
+        #back-to-top:hover { box-shadow: 0 6px 30px rgba(79,70,229,0.7); transform: translateY(-3px); }
+
+        .parallax-hero { will-change: transform; }
+
+        .accent-line { height: 3px; width: 0; background: linear-gradient(90deg, #4f46e5, #a5b4fc); border-radius: 2px; transition: width 0.8s ease; margin-top: 0.5rem; }
+        .visible .accent-line, .accent-line.grown { width: 60px; }
+
+        #section-nav {
+            position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%);
+            z-index: 400; display: flex; flex-direction: column; gap: 10px;
+        }
+        .nav-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: rgba(165,180,252,0.3); cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease; border: none;
+        }
+        .nav-dot.active { background: #a5b4fc; transform: scale(1.4); }
+        .nav-dot:hover  { background: #818cf8; transform: scale(1.2); }
+        @media (max-width: 768px) { #section-nav { display: none; } }
+
+        .tooltip-wrap { position: relative; display: inline; }
+        .tooltip-wrap .tooltip-box {
+            position: absolute; bottom: calc(100% + 6px); left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: rgba(30,41,59,0.95); backdrop-filter: blur(8px);
+            color: #e0e7ff; font-size: 0.72rem; padding: 0.35rem 0.6rem;
+            border-radius: 6px; border: 1px solid rgba(79,70,229,0.4);
+            white-space: nowrap; pointer-events: none; opacity: 0;
+            transition: opacity 0.25s ease, transform 0.25s ease; z-index: 50;
+        }
+        .tooltip-wrap:hover .tooltip-box { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        li.hover-item {
+            padding: 0.4rem 0.6rem; border-radius: 0.4rem;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+        li.hover-item:hover { background: rgba(79,70,229,0.12); transform: translateX(4px); }
+
+        @keyframes scrollCue { 0%,100% { opacity:1; transform:translateY(0); } 50% { opacity:0.3; transform:translateY(6px); } }
     </style>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-dark': '#0f172a', /* slate-900 */
-                        'accent-blue': '#4f46e5', /* indigo-600 */
-                        'accent-light': '#a5b4fc', /* indigo-300 */
-                        'card-bg': '#1e293b', /* slate-800 */
-                    },
-                }
-            }
+            theme: { extend: { colors: {
+                'primary-dark': '#0f172a',
+                'accent-blue': '#4f46e5',
+                'accent-light': '#a5b4fc',
+                'card-bg': '#1e293b',
+            }}}
         }
     </script>
 </head>
-<body class="bg-primary-dark text-gray-100 min-h-screen">
+<body class="text-gray-100 min-h-screen relative">
 
-    <!-- Header -->
-    <header class="bg-card-bg shadow-lg py-4 border-b border-accent-blue/30 sticky top-0 z-10">
+    <div class="bg-animated" aria-hidden="true"></div>
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+    <div class="orb orb-3" aria-hidden="true"></div>
+
+    <div id="scroll-progress" role="progressbar" aria-label="Page scroll progress"></div>
+
+    <nav id="section-nav" aria-label="Section navigation">
+        <button class="nav-dot active" data-section="hero"       title="Hero"></button>
+        <button class="nav-dot"        data-section="intro"      title="Introduction"></button>
+        <button class="nav-dot"        data-section="attributes" title="Key Attributes"></button>
+        <button class="nav-dot"        data-section="security"   title="Security &amp; Supply"></button>
+        <button class="nav-dot"        data-section="summary"    title="Summary"></button>
+    </nav>
+
+    <header class="header-glass shadow-lg py-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto container-padding flex justify-between items-center">
-            <h1 class="text-2xl md:text-3xl font-extrabold text-white">
-                <span class="text-accent-blue">ShaDow's</span> Crypto Guide
+            <h1 class="text-2xl md:text-3xl font-extrabold text-white fade-in">
+                <span class="gradient-text-animated">ShaDow's</span> Crypto Guide
             </h1>
-            <p class="text-sm font-medium text-accent-light hidden sm:block">A Beginner's Breakdown</p>
+            <div class="flex items-center gap-4">
+                <p class="text-sm font-medium text-accent-light hidden sm:block fade-in fade-in-delay-1">A Beginner's Breakdown</p>
+                <a href="Crypto_guide.html"
+                   class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-accent-blue/20 border border-accent-blue/40 text-accent-light hover:bg-accent-blue/40 hover:border-accent-light transition duration-200 fade-in fade-in-delay-2">
+                    Full Guide ↗
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto container-padding py-12 md:py-16">
+    <main class="relative z-10 max-w-7xl mx-auto container-padding py-12 md:py-16">
 
-        <!-- Hero Section -->
-        <section class="text-center mb-16">
-            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-tight">
-                Cryptocurrencies: The <span class="text-accent-blue">Digital Revolution</span>
+        <section id="hero" class="text-center mb-20 parallax-hero">
+            <div class="fade-in">
+                <span class="inline-block text-xs font-bold uppercase tracking-widest text-accent-light/70 border border-accent-blue/30 rounded-full px-4 py-1 mb-6 backdrop-blur">
+                    ✦ Beginner's Guide
+                </span>
+            </div>
+            <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight fade-in fade-in-delay-1">
+                Cryptocurrencies:<br class="hidden md:block">
+                The <span class="gradient-text-animated">Digital Revolution</span>
             </h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-                They're everywhere—on TV, backed by celebrities, and transforming how we think about money. Let's break down the fundamentals.
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-8 fade-in fade-in-delay-2 leading-relaxed">
+                They're everywhere—on TV, backed by celebrities, and transforming how we think about money.
+                Let's break down the fundamentals.
             </p>
+            <div class="fade-in fade-in-delay-3">
+                <a href="#intro"
+                   class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white
+                          bg-gradient-to-r from-accent-blue to-violet-600
+                          hover:from-violet-600 hover:to-accent-blue
+                          shadow-lg hover:shadow-accent-blue/50
+                          transition-all duration-300 hover:-translate-y-1">
+                    Start Learning
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </a>
+            </div>
+            <div class="mt-12 flex justify-center fade-in fade-in-delay-3">
+                <div class="w-6 h-10 rounded-full border-2 border-accent-light/30 flex items-start justify-center pt-1.5">
+                    <div style="width:4px;height:8px;border-radius:2px;background:#a5b4fc;animation:scrollCue 1.6s ease-in-out infinite;" aria-hidden="true"></div>
+                </div>
+            </div>
         </section>
 
-        <!-- What is Crypto? Section -->
-        <section class="grid md:grid-cols-2 gap-8 mb-16">
-            <div class="bg-card-bg p-8 rounded-xl shadow-2xl border-t-4 border-accent-blue">
-                <h3 class="text-3xl font-bold mb-4 text-accent-light">1. The Core Definition</h3>
-                <p class="text-gray-300 leading-relaxed text-lg">
-                    Cryptocurrencies, or "crypto," are a fresh type of digital cash that uses technology to operate <strong class="text-white">without oversight from governments or banks</strong>. They represent a global, fully digital, and open-access form of money.
-                </p>
-            </div>
-            <div class="bg-card-bg p-8 rounded-xl shadow-2xl border-t-4 border-indigo-400">
-                <h3 class="text-3xl font-bold mb-4 text-accent-light">2. Crypto vs. Fiat Money</h3>
-                <p class="text-gray-300 leading-relaxed text-lg">
-                    How do they stack up against regular money, known as <strong class="text-white">"fiat"</strong> (like the US dollar or Euro)? Fiat money is handled by a central authority (the Federal Reserve, ECB). Crypto skips this step entirely.
-                </p>
-            </div>
-        </section>
-
-        <!-- Key Attributes Grid -->
-        <div class="grid md:grid-cols-3 gap-6 mb-16">
-
-            <!-- Digital Nature -->
-            <div class="bg-card-bg p-6 rounded-lg shadow-xl hover:shadow-accent-blue/40 transition duration-300">
-                <div class="text-3xl mb-3 text-accent-blue">💻</div>
-                <h4 class="text-xl font-semibold mb-2">Fully Digital</h4>
-                <p class="text-gray-400">
-                    There are no paper notes or coins involved. It’s all just <strong class="text-white">code running on computers</strong>, making it a purely digital asset.
-                </p>
-            </div>
-
-            <!-- Borderless -->
-            <div class="bg-card-bg p-6 rounded-lg shadow-xl hover:shadow-accent-blue/40 transition duration-300">
-                <div class="text-3xl mb-3 text-accent-blue">🌐</div>
-                <h4 class="text-xl font-semibold mb-2">Borderless Transfers</h4>
-                <p class="text-gray-400">
-                    You can zap them across the globe in seconds, ignoring distances or national lines. All you need is a gadget and an internet connection.
-                </p>
-            </div>
-
-            <!-- Open Access -->
-            <div class="bg-card-bg p-6 rounded-lg shadow-xl hover:shadow-accent-blue/40 transition duration-300">
-                <div class="text-3xl mb-3 text-accent-blue">🔓</div>
-                <h4 class="text-xl font-semibold mb-2">Open to Anyone</h4>
-                <p class="text-gray-400">
-                    Sending or receiving crypto doesn’t require signing up or jumping through hoops. You <strong class="text-white">skip the middleman</strong> for deals.
-                </p>
-            </div>
-
-            <!-- Privacy (Address) -->
-            <div class="bg-card-bg p-6 rounded-lg shadow-xl hover:shadow-accent-blue/40 transition duration-300">
-                <div class="text-3xl mb-3 text-accent-blue">🛡️</div>
-                <h4 class="text-xl font-semibold mb-2">Some Privacy</h4>
-                <p class="text-gray-400">
-                    Instead of personal details, you use a random mix of letters and numbers called an <strong class="text-white">"address."</strong> Your real name is not linked.
-                </p>
-            </div>
-
-            <!-- Decentralization -->
-            <div class="bg-card-bg p-6 rounded-lg shadow-xl hover:shadow-accent-blue/40 transition duration-300">
-                <div class="text-3xl mb-3 text-accent-blue">⚖️</div>
-                <h4 class="text-xl font-semibold mb-2">Decentralized Power</h4>
-                <p class="text-gray-400">
-                    No single authority (government or central bank) calls the shots. This **decentralization** prevents governments from interfering.
-                </p>
-            </div>
-
-            <!-- Creation by Code -->
-            <div class="bg-card-bg p-6 rounded-lg shadow-xl hover:shadow-accent-blue/40 transition duration-300">
-                <div class="text-3xl mb-3 text-accent-blue">🧠</div>
-                <h4 class="text-xl font-semibold mb-2">Created by Code</h4>
-                <p class="text-gray-400">
-                    The units are created following <strong class="text-white">set rules baked into the software code</strong>. Supply follows code rules, not a bank’s whims.
-                </p>
-            </div>
+        <div class="mb-16 overflow-hidden" aria-hidden="true">
+            <svg class="wave-divider w-full" height="24" viewBox="0 0 1200 24" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0 12 Q150 0 300 12 Q450 24 600 12 Q750 0 900 12 Q1050 24 1200 12" stroke="url(#wg)" stroke-width="2" fill="none"/>
+                <defs>
+                    <linearGradient id="wg" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%"   stop-color="#4f46e5" stop-opacity="0"/>
+                        <stop offset="50%"  stop-color="#a5b4fc"/>
+                        <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+            </svg>
         </div>
 
-        <!-- Security and Supply Section -->
-        <section class="mb-16">
-            <div class="bg-card-bg p-8 rounded-xl shadow-2xl">
-                <h3 class="text-3xl font-bold mb-6 text-accent-blue">How Supply and Security Work</h3>
+        <section id="intro" class="grid md:grid-cols-2 gap-8 mb-20">
+            <div class="glass-card gradient-border p-8 shadow-2xl reveal reveal-left">
+                <div class="accent-line"></div>
+                <h3 class="text-2xl font-bold mt-4 mb-4 gradient-text">1. The Core Definition</h3>
+                <p class="text-gray-300 leading-relaxed text-lg">
+                    Cryptocurrencies, or "crypto," are a fresh type of digital cash that uses technology to operate
+                    <span class="tooltip-wrap"><strong class="neon-text">without oversight from governments or banks</strong><span class="tooltip-box">No central authority controls supply or transactions</span></span>.
+                    They represent a global, fully digital, and open-access form of money.
+                </p>
+            </div>
+            <div class="glass-card gradient-border p-8 shadow-2xl reveal reveal-right">
+                <div class="accent-line"></div>
+                <h3 class="text-2xl font-bold mt-4 mb-4 gradient-text">2. Crypto vs. Fiat Money</h3>
+                <p class="text-gray-300 leading-relaxed text-lg">
+                    How do they stack up against regular money, known as
+                    <span class="tooltip-wrap"><strong class="neon-text">"fiat"</strong><span class="tooltip-box">Government-issued currency like USD, EUR</span></span>
+                    (like the US dollar or Euro)? Fiat money is handled by a central authority (the Federal Reserve, ECB). Crypto skips this step entirely.
+                </p>
+            </div>
+        </section>
+
+        <div class="flex items-center gap-4 mb-16" aria-hidden="true">
+            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent"></div>
+            <span class="text-accent-blue/60 text-lg">⬡</span>
+            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent"></div>
+        </div>
+
+        <section id="attributes" class="mb-20">
+            <h3 class="text-2xl font-bold mb-2 text-center reveal gradient-text">Key Attributes</h3>
+            <p class="text-center text-gray-500 text-sm mb-10 reveal">Click any card to learn more</p>
+            <div class="grid md:grid-cols-3 gap-6">
+
+                <div class="glass-card p-6 reveal stagger-1" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                    <div class="icon-float text-3xl mb-3">💻</div>
+                    <h4 class="text-xl font-semibold mb-2 text-accent-light">Fully Digital</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">There are no paper notes or coins. It's all <strong class="text-white">code running on computers</strong>, making it a purely digital asset.</p>
+                    <button class="expand-btn" tabindex="-1" aria-hidden="true">Details <span class="arrow">▼</span></button>
+                    <div class="card-details text-gray-400 text-sm leading-relaxed">
+                        Since crypto exists only as data on a distributed network, it can never be physically seized, lost in a fire, or worn down over time—unlike paper bills or metal coins.
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 reveal stagger-2" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                    <div class="icon-float text-3xl mb-3" style="animation-delay:0.5s">🌐</div>
+                    <h4 class="text-xl font-semibold mb-2 text-accent-light">Borderless Transfers</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">You can send crypto across the globe in seconds, ignoring distances or national lines. All you need is a device and internet.</p>
+                    <button class="expand-btn" tabindex="-1" aria-hidden="true">Details <span class="arrow">▼</span></button>
+                    <div class="card-details text-gray-400 text-sm leading-relaxed">
+                        Traditional wire transfers can take days and cost significant fees. Crypto transactions typically settle in minutes regardless of geographic distance.
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 reveal stagger-3" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                    <div class="icon-float text-3xl mb-3" style="animation-delay:1s">🔓</div>
+                    <h4 class="text-xl font-semibold mb-2 text-accent-light">Open to Anyone</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Sending or receiving crypto doesn't require signing up or jumping through hoops. You <strong class="text-white">skip the middleman</strong>.</p>
+                    <button class="expand-btn" tabindex="-1" aria-hidden="true">Details <span class="arrow">▼</span></button>
+                    <div class="card-details text-gray-400 text-sm leading-relaxed">
+                        Over 1.4 billion adults worldwide are unbanked. Crypto offers a financial system accessible with only a smartphone and internet connection.
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 reveal stagger-4" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                    <div class="icon-float text-3xl mb-3" style="animation-delay:1.5s">🛡️</div>
+                    <h4 class="text-xl font-semibold mb-2 text-accent-light">Some Privacy</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Instead of personal details, you use a random string called an <strong class="text-white">"address."</strong> Your real name is not linked.</p>
+                    <button class="expand-btn" tabindex="-1" aria-hidden="true">Details <span class="arrow">▼</span></button>
+                    <div class="card-details text-gray-400 text-sm leading-relaxed">
+                        While transactions are pseudonymous, they are also publicly recorded on the blockchain—meaning they are traceable with the right tools.
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 reveal stagger-5" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                    <div class="icon-float text-3xl mb-3" style="animation-delay:2s">⚖️</div>
+                    <h4 class="text-xl font-semibold mb-2 text-accent-light">Decentralized Power</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">No single authority calls the shots. Decentralization prevents any government or bank from interfering.</p>
+                    <button class="expand-btn" tabindex="-1" aria-hidden="true">Details <span class="arrow">▼</span></button>
+                    <div class="card-details text-gray-400 text-sm leading-relaxed">
+                        Thousands of independent nodes worldwide verify each transaction, making censorship or shutdown of the network practically impossible.
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 reveal stagger-6" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                    <div class="icon-float text-3xl mb-3" style="animation-delay:2.5s">🧠</div>
+                    <h4 class="text-xl font-semibold mb-2 text-accent-light">Created by Code</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Units are created following <strong class="text-white">rules baked into software code</strong>. Supply follows code rules, not a bank's whims.</p>
+                    <button class="expand-btn" tabindex="-1" aria-hidden="true">Details <span class="arrow">▼</span></button>
+                    <div class="card-details text-gray-400 text-sm leading-relaxed">
+                        Bitcoin, for example, has a hard cap of 21 million coins enforced by its code—no person or authority can override this rule.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mb-16 overflow-hidden" aria-hidden="true">
+            <svg class="wave-divider w-full" height="24" viewBox="0 0 1200 24" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0 12 Q150 24 300 12 Q450 0 600 12 Q750 24 900 12 Q1050 0 1200 12" stroke="url(#wg2)" stroke-width="2" fill="none"/>
+                <defs>
+                    <linearGradient id="wg2" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0"/>
+                        <stop offset="50%"  stop-color="#4f46e5"/>
+                        <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+
+        <section id="security" class="mb-20">
+            <div class="glass-card p-8 shadow-2xl reveal">
+                <h3 class="text-3xl font-bold mb-6 gradient-text-animated">How Supply and Security Work</h3>
                 <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="text-2xl font-semibold mb-3 text-accent-light">The Supply Factor</h4>
-                        <p class="text-gray-300 mb-4">
-                            The supply plays a big role in how valuable a crypto is. Based on the code:
-                        </p>
-                        <ul class="list-disc list-inside space-y-2 text-gray-400 pl-4">
-                            <li>Some cryptocurrencies have a <strong class="text-white">hard limit</strong> on how many will ever exist, which builds in rarity.</li>
-                            <li>Others have <strong class="text-white">no cap</strong>, though they might restrict how many new ones pop up each year.</li>
+                    <div class="reveal reveal-left">
+                        <h4 class="text-xl font-semibold mb-3 text-accent-light flex items-center gap-2">
+                            <span class="text-2xl">📊</span> The Supply Factor
+                        </h4>
+                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">Supply plays a big role in how valuable a crypto is. Based on the code:</p>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li class="hover-item flex items-start gap-2"><span class="text-accent-blue mt-0.5">▸</span> Some cryptocurrencies have a <strong class="neon-text">hard limit</strong> on total supply, which builds in rarity.</li>
+                            <li class="hover-item flex items-start gap-2"><span class="text-accent-blue mt-0.5">▸</span> Others have <strong class="neon-text">no cap</strong>, though they may restrict the annual issuance rate.</li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 class="text-2xl font-semibold mb-3 text-accent-light">The "Crypto" in Cryptocurrency</h4>
-                        <p class="text-gray-300 mb-4">
-                            They are built to <strong class="text-white">resist fakes</strong>. This is where the crypto part comes in:
-                        </p>
-                        <ul class="list-disc list-inside space-y-2 text-gray-400 pl-4">
-                            <li>**Cryptography** uses math to keep transactions secure and logged properly.</li>
-                            <li>It means hiding info through writing tricks (like Caesar used, but now digital).</li>
-                            <li>The safety feature relies on smart recording of all transactions.</li>
+                    <div class="reveal reveal-right">
+                        <h4 class="text-xl font-semibold mb-3 text-accent-light flex items-center gap-2">
+                            <span class="text-2xl">🔐</span> The "Crypto" in Cryptocurrency
+                        </h4>
+                        <p class="text-gray-300 mb-4 text-sm leading-relaxed">They are built to <strong class="text-white">resist fakes</strong>. This is where the crypto part comes in:</p>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li class="hover-item flex items-start gap-2"><span class="text-accent-blue mt-0.5">▸</span> <strong class="neon-text">Cryptography</strong> uses math to keep transactions secure and logged properly.</li>
+                            <li class="hover-item flex items-start gap-2"><span class="text-accent-blue mt-0.5">▸</span> It means hiding info through mathematical tricks—like Caesar's cipher, but now digital.</li>
+                            <li class="hover-item flex items-start gap-2"><span class="text-accent-blue mt-0.5">▸</span> The safety feature relies on immutable recording of all transactions.</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Conclusion -->
-        <section class="text-center bg-accent-blue/10 p-8 rounded-xl shadow-inner border border-accent-blue/50">
-            <h3 class="text-3xl font-bold mb-4 text-accent-blue">Summary: Why Crypto is Unique</h3>
-            <p class="text-lg text-gray-300 max-w-4xl mx-auto">
-                All these features, being fully digital, borderless, peer-to-peer, code-driven, and fake-proof—could allow people to handle their money without outsiders butting in. While the full impact is still evolving, cryptocurrencies are clearly gaining traction as a new kind of investment and financial tool.
-            </p>
+        <section id="summary" class="text-center reveal">
+            <div class="relative rounded-2xl overflow-hidden p-px"
+                 style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%);">
+                <div class="rounded-2xl p-10" style="background: rgba(15,23,42,0.85); backdrop-filter: blur(12px);">
+                    <div class="text-4xl mb-4 icon-float">✨</div>
+                    <h3 class="text-3xl font-bold mb-4 gradient-text-animated">Summary: Why Crypto is Unique</h3>
+                    <p class="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
+                        All these features—being fully digital, borderless, peer-to-peer, code-driven, and fake-proof—
+                        could allow people to handle their money without outsiders butting in.
+                        While the full impact is still evolving, cryptocurrencies are clearly gaining traction as
+                        a new kind of investment and financial tool.
+                    </p>
+                    <div class="mt-8 flex justify-center gap-3 flex-wrap">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-accent-blue/20 border border-accent-blue/40 text-accent-light">Digital</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-violet-600/20 border border-violet-500/40 text-violet-300">Borderless</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-600/20 border border-blue-500/40 text-blue-300">Decentralized</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-600/20 border border-indigo-500/40 text-indigo-300">Secure</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-600/20 border border-purple-500/40 text-purple-300">Open Access</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-card-bg py-4 mt-12 border-t border-accent-blue/30">
-        <div class="max-w-7xl mx-auto container-padding text-center text-sm text-gray-500">
-            &copy; 2025 Learn Crypto With ShaDow. All rights reserved. | For educational purposes only.
+    <footer class="relative z-10 py-6 mt-16 border-t border-accent-blue/20" style="background: rgba(30,41,59,0.5); backdrop-filter: blur(12px);">
+        <div class="max-w-7xl mx-auto container-padding flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-500">
+            <span>&copy; 2025 Learn Crypto With ShaDow. All rights reserved.</span>
+            <span class="text-accent-blue/50">For educational purposes only.</span>
         </div>
     </footer>
 
+    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <script>
+        const progressBar = document.getElementById('scroll-progress');
+        const backBtn     = document.getElementById('back-to-top');
+
+        function updateProgress() {
+            const scrollTop  = window.scrollY;
+            const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = docHeight > 0 ? (scrollTop / docHeight * 100) + '%' : '0%';
+        }
+        function updateBackBtn() {
+            backBtn.classList.toggle('visible', window.scrollY > 400);
+        }
+
+        /* Scroll-reveal */
+        const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    entry.target.querySelectorAll('.accent-line').forEach(l => l.classList.add('grown'));
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => revealObserver.observe(el));
+
+        /* Section nav dots */
+        const sections   = ['hero','intro','attributes','security','summary'];
+        const navDots    = document.querySelectorAll('.nav-dot');
+        const sectionEls = sections.map(id => document.getElementById(id));
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = sections.indexOf(entry.target.id);
+                    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                }
+            });
+        }, { threshold: 0.4 });
+        sectionEls.forEach(el => { if (el) sectionObserver.observe(el); });
+
+        navDots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                sectionEls[i] && sectionEls[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        /* Smooth anchor scroll */
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const target = document.getElementById(a.getAttribute('href').slice(1));
+                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            });
+        });
+
+        /* Parallax hero */
+        const heroEl = document.querySelector('.parallax-hero');
+        function updateParallax() {
+            if (heroEl) heroEl.style.transform = 'translateY(' + window.scrollY * 0.18 + 'px)';
+        }
+
+        /* Expanding cards */
+        function toggleCard(card) {
+            const details = card.querySelector('.card-details');
+            const btn     = card.querySelector('.expand-btn');
+            const isOpen  = details.classList.contains('open');
+            details.classList.toggle('open', !isOpen);
+            btn && btn.classList.toggle('active', !isOpen);
+            card.setAttribute('aria-expanded', String(!isOpen));
+        }
+
+        window.addEventListener('scroll', () => {
+            updateProgress();
+            updateBackBtn();
+            updateParallax();
+        }, { passive: true });
+
+        updateProgress();
+        updateBackBtn();
+    </script>
 </body>
 </html>
