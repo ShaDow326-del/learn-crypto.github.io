@@ -310,7 +310,7 @@
             <p class="text-center text-gray-500 text-sm mb-10 reveal">Click any card to learn more</p>
             <div class="grid md:grid-cols-3 gap-6">
 
-                <div class="glass-card p-6 reveal stagger-1" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                <div class="glass-card p-6 reveal stagger-1" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCard(this)}">
                     <div class="icon-float text-3xl mb-3">💻</div>
                     <h4 class="text-xl font-semibold mb-2 text-accent-light">Fully Digital</h4>
                     <p class="text-gray-400 text-sm leading-relaxed">There are no paper notes or coins. It's all <strong class="text-white">code running on computers</strong>, making it a purely digital asset.</p>
@@ -320,7 +320,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6 reveal stagger-2" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                <div class="glass-card p-6 reveal stagger-2" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCard(this)}">
                     <div class="icon-float text-3xl mb-3" style="animation-delay:0.5s">🌐</div>
                     <h4 class="text-xl font-semibold mb-2 text-accent-light">Borderless Transfers</h4>
                     <p class="text-gray-400 text-sm leading-relaxed">You can send crypto across the globe in seconds, ignoring distances or national lines. All you need is a device and internet.</p>
@@ -330,7 +330,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6 reveal stagger-3" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                <div class="glass-card p-6 reveal stagger-3" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCard(this)}">
                     <div class="icon-float text-3xl mb-3" style="animation-delay:1s">🔓</div>
                     <h4 class="text-xl font-semibold mb-2 text-accent-light">Open to Anyone</h4>
                     <p class="text-gray-400 text-sm leading-relaxed">Sending or receiving crypto doesn't require signing up or jumping through hoops. You <strong class="text-white">skip the middleman</strong>.</p>
@@ -340,7 +340,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6 reveal stagger-4" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                <div class="glass-card p-6 reveal stagger-4" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCard(this)}">
                     <div class="icon-float text-3xl mb-3" style="animation-delay:1.5s">🛡️</div>
                     <h4 class="text-xl font-semibold mb-2 text-accent-light">Some Privacy</h4>
                     <p class="text-gray-400 text-sm leading-relaxed">Instead of personal details, you use a random string called an <strong class="text-white">"address."</strong> Your real name is not linked.</p>
@@ -350,7 +350,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6 reveal stagger-5" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                <div class="glass-card p-6 reveal stagger-5" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCard(this)}">
                     <div class="icon-float text-3xl mb-3" style="animation-delay:2s">⚖️</div>
                     <h4 class="text-xl font-semibold mb-2 text-accent-light">Decentralized Power</h4>
                     <p class="text-gray-400 text-sm leading-relaxed">No single authority calls the shots. Decentralization prevents any government or bank from interfering.</p>
@@ -360,7 +360,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6 reveal stagger-6" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCard(this)">
+                <div class="glass-card p-6 reveal stagger-6" role="button" tabindex="0" aria-expanded="false" onclick="toggleCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCard(this)}">
                     <div class="icon-float text-3xl mb-3" style="animation-delay:2.5s">🧠</div>
                     <h4 class="text-xl font-semibold mb-2 text-accent-light">Created by Code</h4>
                     <p class="text-gray-400 text-sm leading-relaxed">Units are created following <strong class="text-white">rules baked into software code</strong>. Supply follows code rules, not a bank's whims.</p>
@@ -499,11 +499,16 @@
             });
         });
 
-        /* Smooth anchor scroll */
+        /* Smooth anchor scroll with sticky-header offset */
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 const target = document.getElementById(a.getAttribute('href').slice(1));
-                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                if (target) {
+                    e.preventDefault();
+                    const headerH = document.querySelector('header') ? document.querySelector('header').offsetHeight : 0;
+                    const top = target.getBoundingClientRect().top + window.scrollY - headerH - 8;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
             });
         });
 
@@ -523,10 +528,17 @@
             card.setAttribute('aria-expanded', String(!isOpen));
         }
 
+        let rafPending = false;
         window.addEventListener('scroll', () => {
-            updateProgress();
-            updateBackBtn();
-            updateParallax();
+            if (!rafPending) {
+                rafPending = true;
+                requestAnimationFrame(() => {
+                    updateProgress();
+                    updateBackBtn();
+                    updateParallax();
+                    rafPending = false;
+                });
+            }
         }, { passive: true });
 
         updateProgress();
